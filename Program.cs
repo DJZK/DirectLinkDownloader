@@ -22,9 +22,26 @@ namespace DirectLinkDownloader
 
             using (WebClient client = new WebClient())
             {
+                client.DownloadProgressChanged += (sender, e) =>
+                {
+                    Console.WriteLine($"Downloaded {e.BytesReceived} of {e.TotalBytesToReceive} bytes. {e.ProgressPercentage}% complete");
+                };
+
+                client.DownloadFileCompleted += (sender, e) =>
+                {
+                    Console.WriteLine("Download complete.");
+                };
+
                 Console.WriteLine($"Downloading {fileName}...");
-                client.DownloadFile(url, fileName);
-                Console.WriteLine("Download complete.");
+                client.DownloadFileAsync(new Uri(url), fileName);
+                Console.Clear();
+
+                // Keep the application running until download is complete
+                while (client.IsBusy)
+                {
+                    // You can also add a delay here to reduce CPU usage
+                    System.Threading.Thread.Sleep(100);
+                }
             }
         }
     }
