@@ -25,6 +25,7 @@ namespace DirectLinkDownloader
                 client.DownloadProgressChanged += (sender, e) =>
                 {
                     Console.WriteLine($"Downloaded {e.BytesReceived} of {e.TotalBytesToReceive} bytes. {e.ProgressPercentage}% complete");
+                 
                 };
 
                 client.DownloadFileCompleted += (sender, e) =>
@@ -34,7 +35,7 @@ namespace DirectLinkDownloader
 
                 Console.WriteLine($"Downloading {fileName}...");
                 client.DownloadFileAsync(new Uri(url), fileName);
-                Console.Clear();
+                
 
                 // Keep the application running until download is complete
                 while (client.IsBusy)
